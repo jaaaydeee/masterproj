@@ -1,0 +1,101 @@
+Mean Auth App
+
+Run Mongo DB locally:
+> "T:\Program Files 2\MongoDB\Server\4.0\bin\mongod.exe" --dbpath="T:\data\db"
+
+Install:
+-Nodejs
+-MongoDB
+-
+
+
+Create App Steps
+
+1. npm init
+    - enter init fields
+2. Modify newly created package.json to add dependencies
+    - (express, mongoose, bcrypt, cors, json web token, bodyparser, passport, passport-jwt)
+    - npm Install
+    - "require" them in yur root app file
+3. Node/Express boilerplate
+    - app=express()
+    - establish port and listen function
+4. Configure cors (Cross-origin resource sharing)- allows requests to skip the Same-origin policy and access resources from remote hosts
+    -any domain can acces it / potential security issue?
+    - (alternative) 
+        app.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next(); });
+5. Configure router
+    - new folder and file to manage express routing
+    - dont forget import and export
+6. Set up back end endpoints in routes file (see previous step)
+7. Set Static path for front end
+8. connect to database in main app file?
+    - using mLab > ds046549.mlab.com:46549/meanauth -u krau1 -p MEkr!1101
+        + used options to include username and pw
+    - used mongoose, see API for connection and connection validation API
+9. create schema for database items and export to router
+10. create function to add someone in database 
+    - in route handler function call our database function add user, mongoose API 
+    - given new user object encrypt password with bcryptjs
+11. Auth - Create a stragety with passport and jwt and bcypt
+    - existing user enter username and password
+        + bcrypt checks enter password agasit has store in DB
+        + if password match is sucessful establish session by creating a json web token to be returned to the client
+        + this token is checked when requrest specific pages through passport middleware(use to protect pasword route)
+    -protect profile route in router function add as second parameter, 
+        + passport.authenticate('jwt',{session:false})
+11.5. With the back end nearing completion decided to store in a git repo
+    - git init 
+        + set up origin/ config username  and pw
+    - gitignore, hide node mods and any secret info
+    - if starting project before repo 
+        + git clone ___
+        + git pull origin master --allow-unrelated-histories
+12. Create Angular 2 front end
+    - npm install -g @angular/cli then ng new <filename>
+    - in angular-cli.json file change outDir to the public folder 
+    - To start angular2 app > ng serve
+    - create component >ng g component <path/component_name> 
+    - create service ng g service <path/service_name>//services are providers and must add manually to app.module   
+    + css free assets: https://bootswatch.com, and getbootstrap/examples, CTRL+U to see source code
+12.1. Orginaize componets 
+12.2. Set up routing, including routing with creating the initail build gives us app-routing.module
+    - import the generate components and add to routes []
+    - replace href with [routerLink]="['/']"
+    - replace  <li class="nav-item active"> with [routerLinkActive]="['active']" and [routerLinkActiveOptions]="{exact:true}"
+12.3 Set up the component pages, navbar(see 12.2), home, dashb, reg and login
+12.4 Create the register form
+    - html form template
+    - inject 2-way data binding to input fields and add submit event
+    - program the event function logic
+    - create service to validate form info, ng g service ___, import then put in provideer []
+    - use service put import then add obj to constructor
+    - additionally, create service to talk to backend, service auth
+        +httpclient and httpheaders 
+        + ... must subscribe to observables
+12.5 Authenticate login
+    - form to capture username/pw
+    - send userdata to server auth endpoint and recieve auth token
+    - store auth token in localstorage 
+        + //angular-jwt to validate token looks for 'id_token'
+        + local storage can only store strings, so JSON.stringify()
+    -logout function - clr localstorage, nav to login
+12.6 Make protected authentited requests (authentication guard)
+    - send in the header
+    - in client-src folder npm install @auth0/angular-jwt --save, checks the token at protected paths
+    - NOTE: if service is an injectable add to importting objects constructor 
+    - using passport-jwt this is the correct combination
+        + passport.authenticate('jwt', {session:false})
+        + opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+        + ... after jwt.sign() ... token: 'bearer '+token,
+13. Build the application with ng build command
+    -  In angular.json "outputPath": "../public",
+    - ng build, then you can navigate to the local host port of the server and complete your app
+
+14. build for provid
+ng build --prod --aot=false --build-optimizer=false
+cd  ..  git add .   cot commit -m ""
+git push heroku dev:master

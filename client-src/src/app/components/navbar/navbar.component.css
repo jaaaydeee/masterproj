@@ -1,0 +1,18 @@
+#userName {
+    /* font-size: large; */
+    padding-right: 10px;
+}
+
+#userName i {
+    font-size: x-large;
+    padding-right: 5px;
+}
+
+#toroHeader {
+    font-size: large;
+    vertical-align: middle;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: #850038;
+}

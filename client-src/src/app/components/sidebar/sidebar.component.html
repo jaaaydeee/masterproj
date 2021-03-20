@@ -1,0 +1,10 @@
+<div id="mySidebar" class="sidebar">
+  <button class="openbtn" (click)="toogleNav()">☰ </button>
+  <div *ngIf="showSidebar">
+    <a [routerLink]="['/dashboard']"><i class="fas fa-columns"></i> Dashboard</a>
+    <a *ngIf="authService.isFaculty()" [routerLink]="['/generate']"><i class="far fa-calendar-plus"></i> Add Availability</a>
+    <a *ngIf="authService.isStudent()" [routerLink]="['/schedule']"><i class="fas fa-calendar-check"></i> Schedule Appointments</a>
+    <a [routerLink]="['/view']"><i class="far fa-calendar-alt"></i> View Appointments</a>
+    <a [routerLink]="['/help']"><i class="fas fa-info-circle"></i> Help</a>
+  </div>
+</div>

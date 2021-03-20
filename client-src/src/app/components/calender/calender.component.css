@@ -1,0 +1,8 @@
+.cal-day-selected,
+.cal-day-selected:hover {
+    background-color: #32a852 !important;
+}
+
+.cal-event-removed {
+    background-color: #bf000a !important;
+}

@@ -1,0 +1,51 @@
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-4" style="text-align: center;">
+            <img src="../../assets/dh-Logo.png"/>
+        </div>
+        <div class="col-md-8">
+            <h2 class="page-header">Create an Account!</h2>
+            <form (submit)="onRegisterSubmit()">
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label>First Name</label>
+                        <input type="text" [(ngModel)]="firstname" name="firstname" class="form-control">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Last Name</label>
+                        <input type="text" [(ngModel)]="lastname" name="lastname" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col-md-6 form-group">
+                    <label>ID #</label>
+                    <input type="text" [(ngModel)]="id" name="id" class="form-control">
+                </div>
+                <div class="col-md-6 form-group" style="margin-top:30px;">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" [(ngModel)]="type" name="inlineRadioOptions" id="inlineRadio1" value="student">
+                        <label class="form-check-label" for="inlineRadio1">Student</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" [(ngModel)]="type" name="inlineRadioOptions" id="inlineRadio2" value="faculty">
+                        <label class="form-check-label" for="inlineRadio2">Faculty</label>
+                    </div>
+                </div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" [(ngModel)]="email" name="email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" [(ngModel)]="password" name="password" class="form-control">
+                </div>
+                <div class="row">
+                <div class="col text-center">
+                    <input type="submit" class="btn btn-primary" value="Register Account" style="width:50%; padding:10px; margin-top:10px;">
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

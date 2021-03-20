@@ -1,0 +1,103 @@
+1. Create User Table
+
+CREATE TABLE "User"
+(
+    "ID" serial PRIMARY KEY,
+    "Email" character varying(30) NOT NULL UNIQUE,
+    "StudentID" VARCHAR(10) UNIQUE,
+    "FacultyID" VARCHAR(10) UNIQUE,
+    "FirstName" CHAR(25) NOT NULL,
+    "LastName" CHAR(25) NOT NULL,
+    "Password" VARCHAR(128) NOT NULL
+);
+CREATE INDEX i_User_FacultyID ON "User" ("FacultyID");
+CREATE INDEX i_User_StudentID ON "User" ("StudentID");
+
+2. Register User (Example)
+INSERT INTO "User" ("Email", "StudentID", "FacultyID", "FirstName", "LastName", "Password")
+VALUES ('krau@csudh.edu', '123456789', null, 'Kevin', 'R', 'password');
+INSERT INTO "User" ("Email", "StudentID", "FacultyID", "FirstName", "LastName", "Password")
+VALUES ('btang@csudh.edu', null, '666666666', 'Bing', 'Tang', 'password');
+
+3. Get User by ID with dynamic where clause
+SELECT * FROM "User" WHERE "Email" = 'krau@csudh.edu';
+//could have it such that session holds uuid, which checks User table not email or ID
+
+3. Create Appointment
+//debating if I need this, its an extra thing to track
+CREATE TYPE AppointmentStatus AS ENUM (
+  'Available',
+  'Scheduled',
+  'Removed'
+);
+CREATE TABLE "Appointment"
+(
+    "ID" serial PRIMARY KEY,
+    "Status" AppointmentStatus,
+    "StudentID" VARCHAR(10),
+    "FacultyID" VARCHAR(10),
+    "Location" CHAR(255) NOT NULL,
+    "StartTime" TIMESTAMP NOT NULL,
+    "Duration" numeric(4, 2) NOT NULL,
+    "Modified" TIMESTAMP
+);
+CREATE INDEX i_Appointment_StudentID ON "Appointment" ("StudentID");
+CREATE INDEX i_Appointment_FacultyID ON "Appointment" ("FacultyID");
+
+4. Foreign keys for Appointment
+ALTER TABLE "Appointment"
+    ADD CONSTRAINT "fk_studentID"
+    FOREIGN KEY ("StudentID")
+    REFERENCES "User" ("StudentID") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+ALTER TABLE "Appointment"
+    ADD CONSTRAINT "fk_facultyID"
+    FOREIGN KEY ("FacultyID")
+    REFERENCES "User" ("FacultyID") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+//5. Create appointment record
+INSERT INTO "Appointment" ("Status", "FacultyID", "Location", "StartTime", "Duration", "Modified")
+VALUES ('Available', '666666666', 'Room 1', current_timestamp, "1.0", current_timestamp);
+INSERT INTO "Appointment" ("Status", "FacultyID", "Location", "StartTime", "Modified")
+VALUES ('Available', '666666666', 'Room 2', '2021-02-04 11:00:00', current_timestamp);
+INSERT INTO "Appointment" ("Status", "FacultyID", "Location", "StartTime", "Duration", "Modified")
+VALUES ('Available', '666666666', 'Room 2', '2021-02-04 11:00:00', '1.0', current_timestamp);
+
+//6. Get appointments
+//note should they be fetched by next 30days, next 7 days?
+3. By Faculty
+SELECT * FROM "Appointment" WHERE "FacultyID" = ? AND "StartTime" >= now() AND "Status" = 'Available';
+SELECT * FROM "Appointment" WHERE "FacultyID" = '666666666' AND "StartTime" > now();
+//what is postgres and nodes way to handle this
+
+4. By Student
+SELECT * FROM "Appointment" WHERE "StudentID" = '123456789' AND "StartTime" > now();
+
+5. By Faculty - open
+SELECT * FROM "Appointment" WHERE "FacultyID" = ? AND "StartTime" >= now() AND "Status" = 'Available';
+SELECT * FROM "Appointment" WHERE "FacultyID" = ? AND "StartTime" >= now() AND "StudentID" IS NULL;
+
+6. By faculty - booked
+SELECT * FROM "Appointment" WHERE "FacultyID" = ? AND "StartTime" >= now() AND "Status" = 'Scheduled';
+SELECT * FROM "Appointment" WHERE "FacultyID" = ? AND "StartTime" >= now() AND "StudentID" IS NOT NULL;
+
+//Update appointment
+7. book appointment
+UPDATE "Appointment"
+SET "StudentID" = '123456789',"Status" = 'Scheduled', "Modified" = current_timestamp
+WHERE "ID" = 4;
+
+8. cancel appointment
+UPDATE "Appointment"
+SET "StudentID" = null, "Status" = 'Available', "Modified" = current_timestamp
+WHERE "ID" = ?;
+
+9. Remove appointment
+UPDATE "Appointment"
+SET "StudentID" = null, "Status" = 'Removed', "Modified" = current_timestamp
+WHERE "ID" = ?;

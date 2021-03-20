@@ -1,0 +1,16 @@
+<div *ngIf="!authSrv.loggedIn()"> 
+  <div class="jumbotron text-center">
+    <img src="../../assets/dh-Logo.png"/>
+    <h1>Toro Appointment Builder App</h1>
+    <p class="lead">Welcome to this generic Toro themed appointment scheduling application! </p>
+    <div>
+      <a class="btn btn-primary" [routerLink]="['/register']">Register Now</a>
+      <span style="padding:1em;">or</span>
+      <a class="btn btn-default" [routerLink]="['/login']">Login</a>
+    </div>
+  </div>
+</div>
+<div *ngIf="authSrv.loggedIn()">
+  <app-dashboard></app-dashboard>
+</div>
+

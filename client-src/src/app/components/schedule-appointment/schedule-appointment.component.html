@@ -1,0 +1,70 @@
+<div class="" id="scheduleAptContainer">
+  <h2>Schedule an Appointment</h2>
+</div>
+<div class="row">
+  <div class="col-md-4 form-group" style="padding: 1.5em;">
+    <label for="professors">Faculty: </label>
+    <select class="form-control" id="professors" [(ngModel)]="selectedFaculty" (change)="facultyChange()">
+      <option value=""></option>
+      <option *ngFor="let fac of faculty" 
+          [value]="fac.FacultyID" 
+      >
+        {{fac.LastName}}, {{fac.FirstName}}
+      </option>
+    </select>
+
+    <div *ngIf="!noApts && selectedFaculty.length > 0, else elseBlock">
+      <br> <!--Change this to a row-->
+      <label for="aptDate">Date: </label>
+      <select class="form-control" id="aptDate" [(ngModel)]="selectedDay" (change)="dateChange()">
+        <option value=""></option>
+        <option *ngFor="let date of availableDatesSet" 
+            [value]="date"
+        >
+          {{date}}
+        </option>
+      </select>
+  
+      <br> <!--Change this to a row-->
+      <label for="aptTime">Time: </label>
+      <select class="form-control" id="aptTime" [(ngModel)]="selectedTime" (change)="timeChange()">
+        <option value=""></option>
+        <option *ngFor="let time of availableTimes" 
+            [value]="time"
+        >
+          {{time}}
+        </option>
+      </select>
+
+      <hr>
+
+      <div *ngFor="let dets of aptDetails" class="row aptRow">
+        <div class="col-md-9">
+          <div><b>{{dets.faculty}}</b></div>
+          <div>{{dets.start}} - {{dets.end}}</div>
+          <div>{{dets.duration}} mins</div>
+          <div>Room {{dets.location}}</div>
+          <hr>
+        </div>        
+        <div class="col-md-3">
+          <button class="btn btn-info btn-sm" (click)="scheduleApt(dets.id)">Schedule</button>
+        </div>
+      </div>
+
+    </div>
+    <ng-template #elseBlock>
+      <div id="noAppointmentText">
+        <p>No Appointments Available.</p>
+      </div>
+    </ng-template>
+    
+  </div>
+
+  <div class="col-md-8" style="padding: 2em; border: 1px solid black">
+    <app-schedule
+      [events]="events"
+      [eventClicked]="eventClicked"
+      [notifier]="childNotifier"
+    ></app-schedule>
+  </div>
+</div>

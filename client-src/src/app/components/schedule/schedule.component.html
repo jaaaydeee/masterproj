@@ -1,0 +1,39 @@
+<mwl-calendar-header 
+  [(view)]="view" 
+  [(viewDate)]="viewDate"
+  [(hourBlock)]="hourBlock"
+>
+</mwl-calendar-header>
+
+<div [ngSwitch]="view">
+  <mwl-calendar-month-view
+    *ngSwitchCase="'month'"
+    [viewDate]="viewDate"
+    [events]="events"
+    [refresh]="refresh"
+  >
+  </mwl-calendar-month-view>
+  <mwl-calendar-week-view
+    *ngSwitchCase="'week'"
+    [viewDate]="viewDate"
+    [events]="events"
+    [hourSegments] = "hourBlock"
+    [dayStartHour]="8"
+    [dayEndHour]="17"
+    (beforeViewRender)="beforeWeekOrDayViewRender($event)"
+    (eventClicked)="eventClicked($event)"
+    [refresh]="refresh"
+  >
+  </mwl-calendar-week-view>
+  <mwl-calendar-day-view
+    *ngSwitchCase="'day'"
+    [viewDate]="viewDate"
+    [events]="events"
+    [dayStartHour]="8"
+    [dayEndHour]="23"
+    [hourSegments] = "hourBlock"
+    (eventClicked)="eventClicked($event)"
+    [refresh]="refresh"
+  >
+  </mwl-calendar-day-view>
+</div>

@@ -1,0 +1,13 @@
+#contentContainer {
+    padding-top: 1em;
+    padding-right: 3%;
+    padding-bottom: 1em;
+    padding-left: 1em;
+    min-height:90vh;
+}
+
+#entry {
+    background-image: url("/assets/csudh-library.jpg");
+    background-repeat: repeat-x;
+    /* background-color: #424242; */
+}

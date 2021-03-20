@@ -1,0 +1,19 @@
+  <nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="" href="\">
+          <img width="150px" src="../../assets/csudh-logo-mark-on-white.png" />
+          <div class="navbar-brand" id="toroHeader">Toro Scheduler</div>
+        </a>
+        <form class="d-flex">
+            <!-- Register will likey be removed if using google login-->
+            <button *ngIf="!authService.loggedIn()" class="btn btn-outline-success me-2" type="button" [routerLink]="['/register']">Register</button>
+            <button *ngIf="!authService.loggedIn()" class="btn btn-outline-dark me-2" type="button" [routerLink]="['/login']">Login</button>
+
+            <div *ngIf="authService.loggedIn()" id="userName">
+              <i class="fas fa-user-circle"></i> 
+              {{lastname}}, {{firstname}}
+            </div>
+            <button *ngIf="authService.loggedIn()" class="btn btn-outline-dark me-2" type="button" (click)="onLogoutClick()">Logout</button>
+        </form>
+    </div>
+  </nav>

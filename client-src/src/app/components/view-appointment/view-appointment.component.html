@@ -1,0 +1,70 @@
+<div class="" id="viewAptContainer">
+  <h2>View Appointments</h2>
+</div>
+<div class="row">
+  <div class="col-md-4" style="padding: 1.5em;">
+    <!-- Student View -->
+    <div *ngIf="userType === 'student'">
+      <div>
+        <button [routerLink]="['/schedule']" class="btn" id="scheduleBtn" style="background-color: rgb(78, 17, 136); color:white;">Schedule Appointment</button>
+      </div>
+      <hr>
+      <div style="margin-top:2em;">
+        <div *ngIf="events.length > 0">
+            <div class="row" *ngFor="let event of aptDetails" style="margin-top: 10px;">
+              <div class="col-md-9">
+                <div><b>Faculty: {{event.professor}}</b></div>
+                <div>{{event.facultyEmail}}</div>
+                <div>Time: {{event.start}} - {{event.end}}</div>
+                <div>Duration: {{event.duration}} mins</div>
+                <div>Location: Room {{event.location}}</div>
+                <hr>
+              </div>
+              <div class="col-md-3 text-center">
+                <button class="btn btn-primary btn-sm" (click)="cancelAppointment(event.id)">Cancel</button>
+              </div>
+            </div>
+        </div>
+        <div *ngIf="events.length == 0" class="row" id="noAppointmentText">
+          <p>You have no scheduled apointments at this time.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Faculty View -->
+    <div *ngIf="userType === 'faculty'">
+      <div>
+        <div>
+          You have <b>{{events.length}}</b> scheduled Appointments.
+        </div>
+        <br>
+        <div *ngIf="events.length > 0">
+          <div class="row" *ngFor="let event of aptDetails" style="margin-top: 10px;">
+            <div class="col-md-9">
+              <div><b>{{event.student}}</b> ID#{{event.studentID}}</div>
+              <div>{{event.studentEmail}}</div>
+              <div>Time: {{event.start}} - {{event.end}}</div>
+              <div>Duration: {{event.duration}} mins</div>
+              <div>Location: Room {{event.location}}</div>
+              <hr>
+            </div>
+            <div class="col-md-3 text-center">
+              <button class="btn btn-primary btn-sm" (click)="cancelAppointment(event.id)">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="events.length == 0" id="noAppointmentText">
+          <p>You have no student scheduled apointments at this time.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- Change header for this view -->
+  <div class="col-md-8" style="padding: 2em; border: 1px solid black">
+    <app-schedule
+      [events]="events"
+      [eventClicked]="eventClicked"
+      [notifier]="childNotifier"
+    ></app-schedule>
+  </div>
+</div>

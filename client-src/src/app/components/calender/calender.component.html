@@ -1,0 +1,51 @@
+<h2>Create Appointments</h2>
+<p>Current Capacity: {{appointmentsScheduledTotal}}/{{appointmentsTotal}} available</p>
+
+<div class="container">
+  <mwl-calendar-header 
+    [(view)]="view" 
+    [(viewDate)]="viewDate"
+    [(hourBlock)]="hourBlock"
+    [hourBlockToggle] = "true"
+  >
+  </mwl-calendar-header>
+
+  <div class="text-center" style="margin-bottom: 20px;">
+    <button type="button" class="btn btn-lg" (click)="onSubmit()" style="background-color: blue; color: white;">Submit Availability</button>
+  </div>
+
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view
+      *ngSwitchCase="'month'"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+    >
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view
+      *ngSwitchCase="'week'"
+      [viewDate]="viewDate"
+      [events]="events"
+      [hourSegments] = "hourBlock"
+      [dayStartHour]="8"
+      [dayEndHour]="17"
+      (beforeViewRender)="beforeWeekOrDayViewRender($event)"
+      (hourSegmentClicked)="hourSegmentClicked($event.date)"
+      (eventClicked)="eventClicked($event)"
+      [refresh]="refresh"
+    >
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view
+      *ngSwitchCase="'day'"
+      [viewDate]="viewDate"
+      [events]="events"
+      (hourSegmentClicked)="clickedDate = $event.date"
+      [dayStartHour]="8"
+      [dayEndHour]="23"
+      [hourSegments] = "hourBlock"
+      (eventClicked)="eventClicked($event)"
+      [refresh]="refresh"
+    >
+    </mwl-calendar-day-view>
+  </div>
+</div>

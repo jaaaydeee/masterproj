@@ -1,0 +1,21 @@
+<app-navbar></app-navbar>
+
+<div *ngIf="authService.loggedIn()" class="row">
+  <div class="col-md-2">
+    <app-sidebar></app-sidebar>
+  </div>
+  <div class="col-md-10">
+    <div id="contentContainer">
+        <ng-flash-message></ng-flash-message>
+        <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+<div *ngIf="!authService.loggedIn()" id="entry">
+  <div class="container">
+      <ng-flash-message></ng-flash-message>
+      <router-outlet></router-outlet>
+  </div>
+</div>
+
+<!--Footer-->

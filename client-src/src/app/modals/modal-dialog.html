@@ -1,0 +1,75 @@
+<div *ngIf="data.view == 'make'">
+  <h2 mat-dialog-title class="text-center">Add Availability</h2>
+  <mat-dialog-content class="mat-typography">
+
+  <div *ngIf="data.appointments.length > 0" class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon1">Room #</span>
+    </div>
+    <input [(ngModel)]="data.room" id="room" type="text" class="form-control" aria-label="Room" />
+  </div>
+  <p>Appointments:</p>
+  <ul>
+      <li *ngFor="let apt of data.appointments">
+          {{ apt }}
+      </li>
+  </ul>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Confirm</button>
+  </mat-dialog-actions>
+</div>
+
+<!-- View Appointment -->
+<div *ngIf="data.view == 'view'">
+  <h3>{{data.title}}</h3>
+  <br>
+  <p *ngIf="data.faculty">Faculty: {{data.faculty}}</p>
+  <p *ngIf="data.student">Student: {{data.student}}</p>
+  <p>Start time: {{data.start}}</p>
+  <p>End time: {{data.end}}</p>
+  <p>Location: Room {{data.location}}</p>
+  <p>Status: {{data.status}}</p>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</div>
+
+<!-- Schedule Appointment -->
+<div *ngIf="data.view == 'schedule'">
+  <h3>{{data.title}}</h3>
+  <br>
+  <p>Start time: {{data.start}}</p>
+  <p>End time: {{data.end}}</p>
+  <p>Location: Room {{data.location}}</p>
+  <p>Status: {{data.status}}</p>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button><!--returns empty string -->
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Schedule</button>
+  </mat-dialog-actions>
+  <!--cicking outside of modal closes it and returns undefined-->
+</div>
+
+<!-- Cancel Appointment -->
+<div *ngIf="data.view == 'cancel'">
+  <h3>{{data.title}}</h3>
+  <br>
+  <p *ngIf="data.faculty">Faculty: {{data.faculty}}</p>
+  <p *ngIf="data.student">Student: {{data.student}}</p>
+  <p>Start time: {{data.start}}</p>
+  <p>End time: {{data.end}}</p>
+  <p>Location: {{data.location}}</p>
+  <div class="form-group green-border-focus">
+    <label for="cancelReason" style="vertical-align: top; margin-right: 5px;">Reason:</label>
+    <textarea id="cancelReason" rows="2"></textarea>
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Cancel Appointment</button>
+  </mat-dialog-actions>
+</div>
