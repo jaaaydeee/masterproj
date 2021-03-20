@@ -1,2 +1,1 @@
-# meanauthapp
-MEAN stack login app 
+# Toro Scheduler App
